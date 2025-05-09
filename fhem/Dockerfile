@@ -11,14 +11,34 @@ APT::Install-Recommends "false"; \n\
 APT::Install-Suggests "false"; \n\
 APT::Get::Assume-Yes "true"; \n\
 " > /etc/apt/apt.conf.d/no_recommends
+
+RUN apt-get update &&  \
+    apt-get install -y bind9-dnsutils ca-certificates curl gnupg2 inetutils-ping libcap2-bin locales net-tools procps pv vim wget && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN echo 'en_US.UTF-8 UTF-8\nen_GB.UTF-8 UTF-8\nde_DE.UTF-8 UTF-8\n' > /etc/locale.gen && \
+    locale-gen && \
+    rm /etc/locale.gen && \
+    ln -sf /usr/share/zoneinfo/Europe/Berlin /etc/localtime
+
+ENV LANG="en_GB.utf8"
+ENV LC_CTYPE=$LANG \
+    LC_NUMERIC=$LANG \
+    LC_TIME=$LANG \
+    LC_COLLATE=$LANG \
+    LC_MONETARY=$LANG \
+    LC_MESSAGES=$LANG \
+    LC_PAPER=$LANG \
+    LC_NAME=$LANG \
+    LC_ADDRESS=$LANG \
+    LC_TELEPHONE=$LANG \
+    LC_MEASUREMENT=$LANG \
+    LC_IDENTIFICATION=$LANG
     
 RUN touch /sbin/init && touch /etc/apt/sources.list
     
 RUN wget http://fhem.de/${FHEM_DEB} \
-    && apt-get update && \
-    apt-get upgrade && \
-    apt-get install \
-    bind9-dnsutils ca-certificates curl gnupg2 inetutils-ping libcap2-bin locales net-tools procps pv vim wget && \
+    && apt-get update && apt-get install \
     ./${FHEM_DEB} \
     telnet wakeonlan openssh-client \
     libdbd-mysql-perl \
@@ -44,25 +64,6 @@ attr global logfile -\n\
 " > fhem_update.cfg \
     && /usr/bin/perl fhem.pl fhem_update.cfg \
     && rm fhem_update.cfg
-
-RUN echo 'en_US.UTF-8 UTF-8\nen_GB.UTF-8 UTF-8\nde_DE.UTF-8 UTF-8\n' > /etc/locale.gen && \
-    locale-gen && \
-    rm /etc/locale.gen && \
-    ln -sf /usr/share/zoneinfo/Europe/Berlin /etc/localtime
-
-ENV LANG="en_GB.utf8"
-ENV LC_CTYPE=$LANG \
-    LC_NUMERIC=$LANG \
-    LC_TIME=$LANG \
-    LC_COLLATE=$LANG \
-    LC_MONETARY=$LANG \
-    LC_MESSAGES=$LANG \
-    LC_PAPER=$LANG \
-    LC_NAME=$LANG \
-    LC_ADDRESS=$LANG \
-    LC_TELEPHONE=$LANG \
-    LC_MEASUREMENT=$LANG \
-    LC_IDENTIFICATION=$LANG
 
 WORKDIR /opt/fhem
     
