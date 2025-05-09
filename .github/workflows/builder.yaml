@@ -1,0 +1,68 @@
+name: Builder
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      packages: write
+
+    strategy:
+      matrix:
+        addon: [fhem]
+
+    steps:
+      - uses: actions/checkout@v4.2.2
+        with:
+          persist-credentials: true
+
+      - name: Config-YAML erstellen
+        shell: python
+        working-directory: ${{ matrix.addon }}
+        run: |
+          import yaml
+          yaml.dump({
+            "name": "FHEM",
+            "version": "0.1.${{ github.run_number }}",
+            "slug": "fhem",
+            "description": "FHEM für HomeAssistent",
+            "arch": ["amd64"],
+            "ports": {"8083/tcp": 8083},
+            "usb": True,
+            "init": False,
+            "image": "ghcr.io/tsoybe/ha-addon-fhem"
+          }, open('config.yaml', 'w'))
+
+      - name: Config.yaml committen und pushen
+        working-directory: ${{ matrix.addon }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add config.yaml
+          git commit -m "Versionsupdate"
+          git push  
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3.4.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build ${{ matrix.addon }} add-on
+        uses: home-assistant/builder@2025.03.0
+        with:
+          args: |
+            --amd64 \
+            --target ${{ matrix.addon }} \
+            --docker-hub "ghcr.io/${{ github.repository_owner }}" \
+            --addon
