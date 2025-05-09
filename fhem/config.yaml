@@ -6,6 +6,7 @@ init: false
 name: FHEM
 ports:
   8083/tcp: 8083
+  8099/tcp: 8099
 slug: fhem
 url: https://github.com/tsoybe/ha-addons
 usb: true
