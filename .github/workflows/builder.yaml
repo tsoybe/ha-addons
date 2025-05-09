@@ -36,7 +36,7 @@ jobs:
             "slug": "fhem",
             "description": "FHEM für HomeAssistent",
             "arch": ["amd64"],
-            "ports": {"8099/tcp": 8099},
+            "ports": {"8083/tcp": 8083},
             "usb": True,
             "uart": True,
             "init": False,
