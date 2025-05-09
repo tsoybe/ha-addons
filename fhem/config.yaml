@@ -5,10 +5,10 @@ image: ghcr.io/tsoybe/ha-addon-fhem
 init: false
 name: FHEM
 ports:
-  8099/tcp: 8099
+  8083/tcp: 8083
 slug: fhem
 uart: true
 url: https://github.com/tsoybe/ha-addons
 usb: true
-version: 0.1.12
+version: 0.1.13
 webui: http://[HOST]:[PORT:8083]/fhem
