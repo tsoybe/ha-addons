@@ -1,0 +1,11 @@
+arch:
+- amd64
+description: "FHEM f\xFCr HomeAssistent"
+image: ghcr.io/tsoybe/ha-addon-fhem
+init: false
+name: FHEM
+ports:
+  8083/tcp: 8083
+slug: fhem
+usb: true
+version: 0.1.1
