@@ -42,8 +42,6 @@ jobs:
             "image": "ghcr.io/tsoybe/ha-addon-fhem",
             "url": "https://github.com/tsoybe/ha-addons",
             "webui": "http://[HOST]:[PORT:8083]/fhem",
-            "ingress": True,
-            "ingress_port": 8083,
           }, open('config.yaml', 'w'))
 
       - name: Login to GitHub Container Registry
