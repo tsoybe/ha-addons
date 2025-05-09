@@ -65,19 +65,15 @@ attr global logfile -\n\
     && /usr/bin/perl fhem.pl fhem_update.cfg \
     && rm fhem_update.cfg
 
-WORKDIR /opt/fhem
-    
-RUN touch log/fhem.log && chown fhem:dialout log/fhem.log
+RUN userdel fhem
 
-RUN mkdir /data
-RUN chown fhem:dialout /data
-    
-USER fhem
-    
+WORKDIR /opt/fhem
+        
 RUN mkdir /opt/fhem/.ssh
 RUN echo "Host \nHashKnownHosts no\nStrictHostKeyChecking no\m"
     
 EXPOSE 8083
 
+RUN mkdir /data
 COPY run.sh /opt/fhem
 CMD /opt/fhem/run.sh
