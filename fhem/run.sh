@@ -3,7 +3,7 @@
 echo "##############################"
 
 if [ ! -f "/data/fhem.cfg" ]; then
-   cat <<EOF
+   cat <<EOF > /data/fhem.cfg
 attr global logfile -
 attr global modpath .
 attr global verbose 3
@@ -13,7 +13,7 @@ define WEB FHEMWEB 8083 global
 attr WEB room System
 define eventTypes eventTypes ./log/eventTypes.txt
 attr eventTypes room System
-EOF > /data/fhem.cfg
+EOF
     echo "Standardkonfig erstellt."
 else
     echo "Konfig gefunden:"
