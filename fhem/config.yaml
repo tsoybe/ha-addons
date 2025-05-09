@@ -8,4 +8,4 @@ ports:
   8083/tcp: 8083
 slug: fhem
 usb: true
-version: 0.1.2
+version: 0.1.3
