@@ -42,15 +42,6 @@ jobs:
             "image": "ghcr.io/tsoybe/ha-addon-fhem"
           }, open('config.yaml', 'w'))
 
-      - name: Config.yaml committen und pushen
-        working-directory: ${{ matrix.addon }}
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add config.yaml
-          git commit -m "Versionsupdate"
-          git push  
-
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3.4.0
         with:
@@ -66,3 +57,12 @@ jobs:
             --target ${{ matrix.addon }} \
             --docker-hub "ghcr.io/${{ github.repository_owner }}" \
             --addon
+
+      - name: Config.yaml committen und pushen
+        working-directory: ${{ matrix.addon }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add config.yaml
+          git commit -m "Versionsupdate"
+          git push  
