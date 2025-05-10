@@ -1,6 +1,6 @@
 arch:
 - amd64
-description: "MQTT anonymous"
+description: MQTT anonymous
 image: ghcr.io/tsoybe/ha-addon-mqtt-anonymous
 init: false
 name: MQTT-anonymous
@@ -9,3 +9,4 @@ ports:
   9001/tcp: 9001
 slug: mqtt-anonymous
 url: https://github.com/tsoybe/ha-addons
+version: 0.1.14
