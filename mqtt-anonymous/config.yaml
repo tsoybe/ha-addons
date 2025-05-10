@@ -1,0 +1,11 @@
+arch:
+- amd64
+description: "MQTT anonymous"
+image: ghcr.io/tsoybe/ha-addon-mqtt-anonymous
+init: false
+name: MQTT-anonymous
+ports:
+  1883/tcp: 1883
+  9001/tcp: 9001
+slug: mqtt-anonymous
+url: https://github.com/tsoybe/ha-addons

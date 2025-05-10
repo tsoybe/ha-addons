@@ -18,7 +18,7 @@ jobs:
 
     strategy:
       matrix:
-        addon: [fhem]
+        addon: [mqtt-anonymous]
 
     steps:
       - uses: actions/checkout@v4.2.2
@@ -30,20 +30,11 @@ jobs:
         working-directory: ${{ matrix.addon }}
         run: |
           import yaml
-          yaml.dump({
-            "name": "FHEM",
-            "version": "0.1.${{ github.run_number }}",
-            "slug": "fhem",
-            "description": "FHEM für HomeAssistent",
-            "arch": ["amd64"],
-            "ports": {"8083/tcp": 8083},
-            "usb": True,
-            "uart": True,
-            "init": False,
-            "image": "ghcr.io/tsoybe/ha-addon-fhem",
-            "url": "https://github.com/tsoybe/ha-addons",
-            "webui": "http://[HOST]:[PORT:8083]/fhem",
-          }, open('config.yaml', 'w'))
+          with open('config.yaml', 'r') as file:
+            config = yaml.safe_load(file)
+          config["version"] = "0.1.${{ github.run_number }}"
+          with open('config.yaml', 'w') as file:
+            yaml.dump(config, file)
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3.4.0
@@ -67,5 +58,5 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add config.yaml
-          git commit -m "Versionsupdate"
+          git commit -m "Versionsupdate: ${{ matrix.addon }}"
           git push  
