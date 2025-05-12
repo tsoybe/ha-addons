@@ -74,10 +74,6 @@ jobs:
       contents: write
       packages: write
 
-    # strategy:
-    #   matrix:
-    #     addon: [mqtt-anonymous]
-
     steps:
       - uses: actions/checkout@v4.2.2
         with:

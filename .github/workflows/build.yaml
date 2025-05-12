@@ -1,0 +1,62 @@
+name: Builder
+
+on:
+  workflow_dispatch:
+    inputs:
+      addon:
+        description: 'Addon, welches gebaut werden soll'
+        required: true
+
+jobs:
+
+  build:
+    needs: check-changed
+    name: Build ${{ github.event.inputs.addon }} add-on
+    
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      packages: write
+
+    env:
+      addon: ${{ github.event.inputs.addon }}
+
+    steps:
+      - uses: actions/checkout@v4.2.2
+        with:
+          persist-credentials: true
+
+      - name: Get information
+        id: info
+        uses: home-assistant/actions/helpers/info@master
+        with:
+          path: "./${{ env.addon }}"
+
+      - name: Config-YAML erstellen
+        shell: python
+        working-directory: ${{ env.addon }}
+        run: |
+          import yaml
+          with open('config.yaml', 'r') as file:
+            config = yaml.safe_load(file)
+          config["version"] = "0.1.${{ github.run_number }}"
+          with open('config.yaml', 'w') as file:
+            yaml.dump(config, file)
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3.4.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Config.yaml committen und pushen
+        working-directory: ${{ env.addon }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add config.yaml
+          git commit -m "Versionsupdate: ${{ env.addon }}"
+          git pull --rebase
+          git push  
