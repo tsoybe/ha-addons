@@ -63,11 +63,11 @@ jobs:
     needs: check-changed
     name: Build ${{ matrix.addon }} add-on
     
-    if: needs.init.outputs.changed == 'true'
+    if: needs.check-changed.outputs.changed == 'true'
     
     strategy:
       matrix:
-        addon: ${{ fromJson(needs.init.outputs.changed_addons) }}
+        addon: ${{ fromJson(needs.check-changed.outputs.changed_addons) }}
 
     runs-on: ubuntu-latest
 
