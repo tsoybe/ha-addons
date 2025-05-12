@@ -71,6 +71,7 @@ jobs:
 
       - name: Summary
         run: |
+          echo '${{ steps.trivy.conclusion }}' >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
           cat trivy-results.table | tee -a $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
