@@ -1,0 +1,67 @@
+name: Lint
+
+on:
+  workflow_dispatch:
+
+jobs:
+  find:
+    name: Find add-ons
+    runs-on: ubuntu-latest
+
+    outputs:
+      addons: ${{ steps.addons.outputs.addons_list }}
+
+    steps:
+      - name: ⤵️ Check out code from GitHub
+        uses: actions/checkout@v4.2.2
+
+      - name: 🔍 Find add-on directories
+        id: addons
+        uses: home-assistant/actions/helpers/find-addons@master
+
+
+  trivy:
+    name: Trivy add-on ${{ matrix.path }}
+    runs-on: ubuntu-latest
+    needs: find
+
+    strategy:
+      matrix:
+        addon: ${{ fromJson(needs.find.outputs.addons) }}
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4.2.2
+
+      - name: Get information
+        id: info
+        uses: home-assistant/actions/helpers/info@master
+        with:
+          path: "./${{ matrix.addon }}"
+
+      - name: Check if add-on should be built
+        id: check
+        run: |
+          if [[ "${{ steps.info.outputs.image }}" == "null" ]]; then
+            echo "Image property is not defined, skipping build"
+          else
+            echo "image=$(echo ${{ steps.info.outputs.image }} | cut -d'/' -f3)" >> $GITHUB_OUTPUT;
+          fi
+
+      # - name: Run Trivy vulnerability scanner
+      #   id: trivy
+      #   uses: aquasecurity/trivy-action@master
+      #   with:
+      #     image-ref: ghcr.io/y-o-b/base/debian:latest
+      #     format: 'table'
+      #     exit-code: '1'
+      #     ignore-unfixed: true
+      #     vuln-type: 'os,library'
+      #     severity: 'CRITICAL,HIGH'
+      #     output: 'trivy-results.table'
+      #     skip-dirs: '/etc/ssh/'
+      #     skip-files: '/usr/local/bin/gosu' # wird oft angemeckert.
+      #   env:
+      #     TRIVY_DISABLE_VEX_NOTICE: true
+      #     TRIVY_SKIP_DB_UPDATE: true
+      #     TRIVY_SKIP_JAVA_DB_UPDATE: true
