@@ -1,8 +1,8 @@
-FROM eclipse-mosquitto:1.6.14-openssl
+FROM eclipse-mosquitto:1.6-openssl
 
-# RUN apk update
-# RUN apk add --upgrade apk-tools
-# RUN apk upgrade --available
+RUN apk update
+RUN apk add --upgrade apk-tools
+RUN apk upgrade --available
 
 RUN echo -e "persistence true\n\
 persistence_location /mosquitto/data/\n\

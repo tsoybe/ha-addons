@@ -41,100 +41,101 @@ jobs:
               for file in ${{ env.MONITORED_FILES }}; do
                   if [[ "${{ steps.changed_files.outputs.all }}" =~ $addon/$file ]]; then
                     if [[ ! "${changed_addons[@]}" =~ $addon ]]; then
-                      changed_addons+=("\"${addon}\",");
+                      # changed_addons+=("\"${addon}\",");
+                      gh workflow run builder.yaml --ref main -f addon=${addon};
                     fi
                   fi
               done
             fi
           done
 
-          changed=$(echo ${changed_addons[@]} | rev | cut -c 2- | rev)
+          # changed=$(echo ${changed_addons[@]} | rev | cut -c 2- | rev)
 
-          if [[ -n ${changed} ]]; then
-            echo "Changed add-ons: $changed";
-            echo "changed=true" >> $GITHUB_OUTPUT;
-            echo "addons=[$changed]" >> $GITHUB_OUTPUT;
-          else
-            echo "No add-on had any monitored files changed (${{ env.MONITORED_FILES }})";
-          fi
+          # if [[ -n ${changed} ]]; then
+          #   echo "Changed add-ons: $changed";
+          #   echo "changed=true" >> $GITHUB_OUTPUT;
+          #   echo "addons=[$changed]" >> $GITHUB_OUTPUT;
+          # else
+          #   echo "No add-on had any monitored files changed (${{ env.MONITORED_FILES }})";
+          # fi
 
-  build:
-    needs: check-changed
-    name: Build ${{ matrix.addon }} add-on
+  # build:
+  #   needs: check-changed
+  #   name: Build ${{ matrix.addon }} add-on
     
-    if: needs.check-changed.outputs.changed == 'true'
+  #   if: needs.check-changed.outputs.changed == 'true'
     
-    strategy:
-      matrix:
-        addon: ${{ fromJson(needs.check-changed.outputs.changed_addons) }}
+  #   strategy:
+  #     matrix:
+  #       addon: ${{ fromJson(needs.check-changed.outputs.changed_addons) }}
 
-    runs-on: ubuntu-latest
+  #   runs-on: ubuntu-latest
 
-    permissions:
-      contents: write
-      packages: write
+  #   permissions:
+  #     contents: write
+  #     packages: write
 
-    steps:
-      - uses: actions/checkout@v4.2.2
-        with:
-          persist-credentials: true
+  #   steps:
+  #     - uses: actions/checkout@v4.2.2
+  #       with:
+  #         persist-credentials: true
 
-      - name: Get information
-        id: info
-        uses: home-assistant/actions/helpers/info@master
-        with:
-          path: "./${{ matrix.addon }}"
+  #     - name: Get information
+  #       id: info
+  #       uses: home-assistant/actions/helpers/info@master
+  #       with:
+  #         path: "./${{ matrix.addon }}"
 
-      - name: Check if add-on should be built
-        id: check
-        run: |
-          if [[ "${{ steps.info.outputs.image }}" == "null" ]]; then
-            echo "Image property is not defined, skipping build"
-            echo "build_arch=false" >> $GITHUB_OUTPUT;
-          else
-            echo "build_arch=true" >> $GITHUB_OUTPUT;
-            echo "image=$(echo ${{ steps.info.outputs.image }} | cut -d'/' -f3)" >> $GITHUB_OUTPUT;
-            if [[ -z "${{ github.head_ref }}" ]] && [[ "${{ github.event_name }}" == "push" ]]; then
-                echo "BUILD_ARGS=" >> $GITHUB_ENV;
-            fi
-          fi
+  #     - name: Check if add-on should be built
+  #       id: check
+  #       run: |
+  #         if [[ "${{ steps.info.outputs.image }}" == "null" ]]; then
+  #           echo "Image property is not defined, skipping build"
+  #           echo "build_arch=false" >> $GITHUB_OUTPUT;
+  #         else
+  #           echo "build_arch=true" >> $GITHUB_OUTPUT;
+  #           echo "image=$(echo ${{ steps.info.outputs.image }} | cut -d'/' -f3)" >> $GITHUB_OUTPUT;
+  #           if [[ -z "${{ github.head_ref }}" ]] && [[ "${{ github.event_name }}" == "push" ]]; then
+  #               echo "BUILD_ARGS=" >> $GITHUB_ENV;
+  #           fi
+  #         fi
 
-      - name: Config-YAML erstellen
-        shell: python
-        working-directory: ${{ matrix.addon }}
-        run: |
-          import yaml
-          with open('config.yaml', 'r') as file:
-            config = yaml.safe_load(file)
-          config["version"] = "0.1.${{ github.run_number }}"
-          with open('config.yaml', 'w') as file:
-            yaml.dump(config, file)
+  #     - name: Config-YAML erstellen
+  #       shell: python
+  #       working-directory: ${{ matrix.addon }}
+  #       run: |
+  #         import yaml
+  #         with open('config.yaml', 'r') as file:
+  #           config = yaml.safe_load(file)
+  #         config["version"] = "0.1.${{ github.run_number }}"
+  #         with open('config.yaml', 'w') as file:
+  #           yaml.dump(config, file)
 
-      - name: Login to GitHub Container Registry
-        if: env.BUILD_ARGS != '--test'
-        uses: docker/login-action@v3.4.0
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+  #     - name: Login to GitHub Container Registry
+  #       if: env.BUILD_ARGS != '--test'
+  #       uses: docker/login-action@v3.4.0
+  #       with:
+  #         registry: ghcr.io
+  #         username: ${{ github.repository_owner }}
+  #         password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build '${{ matrix.addon }}' add-on
-        uses: home-assistant/builder@2025.03.0
-        with:
-          args: |
-            ${{ env.BUILD_ARGS }} \
-            --amd64 \
-            --target ${{ matrix.addon }} \
-            --docker-hub "ghcr.io/${{ github.repository_owner }}" \
-            --addon
+  #     - name: Build '${{ matrix.addon }}' add-on
+  #       uses: home-assistant/builder@2025.03.0
+  #       with:
+  #         args: |
+  #           ${{ env.BUILD_ARGS }} \
+  #           --amd64 \
+  #           --target ${{ matrix.addon }} \
+  #           --docker-hub "ghcr.io/${{ github.repository_owner }}" \
+  #           --addon
 
-      - name: Config.yaml committen und pushen
-        if: env.BUILD_ARGS != '--test'
-        working-directory: ${{ matrix.addon }}
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add config.yaml
-          git commit -m "Versionsupdate: ${{ matrix.addon }}"
-          git pull --rebase
-          git push  
+  #     - name: Config.yaml committen und pushen
+  #       if: env.BUILD_ARGS != '--test'
+  #       working-directory: ${{ matrix.addon }}
+  #       run: |
+  #         git config --global user.name "github-actions[bot]"
+  #         git config --global user.email "github-actions[bot]@users.noreply.github.com"
+  #         git add config.yaml
+  #         git commit -m "Versionsupdate: ${{ matrix.addon }}"
+  #         git pull --rebase
+  #         git push  
