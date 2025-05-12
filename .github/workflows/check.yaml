@@ -45,7 +45,7 @@ jobs:
           if [[ "${{ steps.info.outputs.image }}" == "null" ]]; then 
             echo "Image property is not defined, skipping build"  >> $GITHUB_STEP_SUMMARY
           else
-            echo "image=$(echo ${{ steps.info.outputs.image }} | cut -d'/' -f3)" >> $GITHUB_OUTPUT;
+            echo "image=$(echo ${{ steps.info.outputs.image }})" >> $GITHUB_OUTPUT;
             docker pull ${{ steps.info.outputs.image }}
           fi
 
