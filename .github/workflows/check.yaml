@@ -44,11 +44,7 @@ jobs:
         run: |
           if [[ "${{ steps.info.outputs.image }}" == "null" ]]; then 
             echo "Image property is not defined, skipping build"  >> $GITHUB_STEP_SUMMARY
-          else
-            echo "image=$(echo ${{ steps.info.outputs.image }})" >> $GITHUB_OUTPUT;
-            docker pull ${{ steps.info.outputs.image }}
-          fi
-
+                continue-on-error: true
       - name: Run Trivy vulnerability scanner
         if: steps.info.outputs.image != '"null"'
         id: trivy
@@ -90,4 +86,4 @@ jobs:
     runs-on: ubuntu-latest
     needs: trivy
     steps:
-      - run: echo "${ needs.trivy.outputs.vulnerable }" >> $GITHUB_STEP_SUMMARY
+      - run: echo "${{ needs.trivy.outputs.vulnerable }}" >> $GITHUB_STEP_SUMMARY
