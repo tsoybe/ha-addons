@@ -50,7 +50,7 @@ jobs:
           fi
 
       - name: Run Trivy vulnerability scanner
-        if: steps.info.outputs.image != "null"
+        if: steps.info.outputs.image != '"null"'
         id: trivy
         uses: aquasecurity/trivy-action@master
         with:
