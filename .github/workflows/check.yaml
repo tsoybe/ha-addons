@@ -25,9 +25,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: find
   
-    outputs:
-      vulnerable: ${{ steps.result.outputs.vulnerable }}
-
     strategy:
       matrix:
         addon: ${{ fromJson(needs.find.outputs.addons) }}
@@ -72,25 +69,31 @@ jobs:
           TRIVY_SKIP_JAVA_DB_UPDATE: true
         continue-on-error: true
 
-      - name: Set output if vulnerable
-        id: result
-        run: |
-          if [ $? -ne 0 ]; then
-            echo "vulnerable=true" >> $GITHUB_OUTPUT
-          else
-            echo "vulnerable=false" >> $GITHUB_OUTPUT
-          fi
-        shell: bash
-
       - name: Summary
-        # if: always()
         run: |
           echo '```' >> $GITHUB_STEP_SUMMARY
           cat trivy-results.table | tee -a $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
 
-  next:
-    runs-on: ubuntu-latest
-    needs: trivy
-    steps:
-      - run: echo "${{ needs.trivy.outputs.vulnerable }}" >> $GITHUB_STEP_SUMMARY
+      - name: Config-YAML anpassen
+        if: steps.trivy.conclusion == 'failure'
+        shell: python
+        working-directory: ${{ matrix.addon }}
+        run: |
+          import yaml
+          with open('config.yaml', 'r') as file:
+            config = yaml.safe_load(file)
+          config.pop("version")
+          with open('config.yaml', 'w') as file:
+            yaml.dump(config, file)
+
+      - name: Config-YAML anpassen
+        if: steps.trivy.conclusion == 'failure'
+        working-directory: ${{ matrix.addon }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add config.yaml
+          git commit -m "Versionsupdate: ${{ matrix.addon }}"
+          git pull --rebase
+          git push  
