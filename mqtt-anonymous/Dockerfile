@@ -1,4 +1,4 @@
-FROM eclipse-mosquitto:1.6.4-openssl
+FROM eclipse-mosquitto:1.5-openssl
 
 # RUN apk update
 # RUN apk add --upgrade apk-tools
