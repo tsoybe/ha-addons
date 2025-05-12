@@ -60,7 +60,7 @@ jobs:
           fi
 
   build:
-    needs: init
+    needs: check-changed
     name: Build ${{ matrix.addon }} add-on
     
     if: needs.init.outputs.changed == 'true'
