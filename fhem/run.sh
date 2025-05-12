@@ -4,6 +4,7 @@ echo "##############################"
 
 if [ ! -f "/data/fhem.cfg" ]; then
    cat <<EOF > /data/fhem.cfg
+attr global nofork 1
 attr global logfile -
 attr global modpath .
 attr global verbose 3
