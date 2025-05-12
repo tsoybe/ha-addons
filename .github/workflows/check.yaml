@@ -29,6 +29,9 @@ jobs:
       matrix:
         addon: ${{ fromJson(needs.find.outputs.addons) }}
 
+    outputs:
+      vulnerable: ${{ steps.result.outputs.vulnerable }}
+
     steps:
       - name: Check out the repository
         uses: actions/checkout@v4.2.2
