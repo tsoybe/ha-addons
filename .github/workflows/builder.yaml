@@ -50,6 +50,15 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Build '${{ env.addon }}' add-on
+        uses: home-assistant/builder@2025.03.0
+        with:
+          args: |
+            --amd64 \
+            --target ${{ env.addon }} \
+            --docker-hub "ghcr.io/${{ github.repository_owner }}" \
+            --addon
+
       - name: Config.yaml committen und pushen
         working-directory: ${{ env.addon }}
         run: |
