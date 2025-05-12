@@ -64,7 +64,7 @@ jobs:
           skip-files: '/usr/local/bin/gosu' # wird oft angemeckert.
         env:
           TRIVY_DISABLE_VEX_NOTICE: true
-          TRIVY_SKIP_DB_UPDATE: true
+          # TRIVY_SKIP_DB_UPDATE: true
           TRIVY_SKIP_JAVA_DB_UPDATE: true
 
       - name: Summary
