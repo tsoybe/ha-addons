@@ -1,4 +1,4 @@
-name: Builder
+name: Check Update
 
 env:
   BUILD_ARGS: "--test"

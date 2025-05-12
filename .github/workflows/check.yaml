@@ -102,4 +102,4 @@ jobs:
       - name: Start Workflow
         if: steps.trivy.outcome == 'failure'
         run: |
-          gh workflow run build.yaml --ref main -f addon=${{ matrix.addon }}
+          gh workflow run builder.yaml --ref main -f addon=${{ matrix.addon }}
