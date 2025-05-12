@@ -42,18 +42,19 @@ jobs:
       - name: Check if add-on should be built
         id: check
         run: |
-          if [[ "${{ steps.info.outputs.image }}" == "null" ]]; then
+          if [[ "${{ steps.info.outputs.image }}" == "null" ]]; then 
             echo "Image property is not defined, skipping build"  >> $GITHUB_STEP_SUMMARY
           else
+            echo "image=$(echo ${{ steps.info.outputs.image }} | cut -d'/' -f3)" >> $GITHUB_OUTPUT;
             docker pull ${{ steps.info.outputs.image }}
           fi
 
       - name: Run Trivy vulnerability scanner
-        # if: steps.info.outputs.image != "null
+        if: steps.info.outputs.image != "null"
         id: trivy
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ${{ steps.info.outputs.image }}
+          image-ref: ${{ steps.check.outputs.image }}
           format: 'table'
           # exit-code: '1'
           ignore-unfixed: true
