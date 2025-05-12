@@ -1,5 +1,9 @@
 name: Builder
 
+env:
+  BUILD_ARGS: "--test"
+  MONITORED_FILES: "build.yaml config.yaml Dockerfile run.sh"
+
 on:
   push:
     branches:
@@ -9,21 +13,96 @@ on:
       - main
   
 jobs:
+  check-changed:
+    runs-on: ubuntu-latest
+    name: Geänderte Addons
+    
+    outputs:
+      changed_addons: ${{ steps.changed_addons.outputs.addons }}
+      changed: ${{ steps.changed_addons.outputs.changed }}
+    
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4.2.2
+
+      - name: Get changed files
+        id: changed_files
+        uses: jitterbit/get-changed-files@v1
+
+      - name: Find add-on directories
+        id: addons
+        uses: home-assistant/actions/helpers/find-addons@master
+
+      - name: Get changed add-ons
+        id: changed_addons
+        run: |
+          declare -a changed_addons
+          for addon in ${{ steps.addons.outputs.addons }}; do
+            if [[ "${{ steps.changed_files.outputs.all }}" =~ $addon ]]; then
+              for file in ${{ env.MONITORED_FILES }}; do
+                  if [[ "${{ steps.changed_files.outputs.all }}" =~ $addon/$file ]]; then
+                    if [[ ! "${changed_addons[@]}" =~ $addon ]]; then
+                      changed_addons+=("\"${addon}\",");
+                    fi
+                  fi
+              done
+            fi
+          done
+
+          changed=$(echo ${changed_addons[@]} | rev | cut -c 2- | rev)
+
+          if [[ -n ${changed} ]]; then
+            echo "Changed add-ons: $changed";
+            echo "changed=true" >> $GITHUB_OUTPUT;
+            echo "addons=[$changed]" >> $GITHUB_OUTPUT;
+          else
+            echo "No add-on had any monitored files changed (${{ env.MONITORED_FILES }})";
+          fi
+
   build:
+    needs: init
+    name: Build ${{ matrix.addon }} add-on
+    
+    if: needs.init.outputs.changed == 'true'
+    
+    strategy:
+      matrix:
+        addon: ${{ fromJson(needs.init.outputs.changed_addons) }}
+
     runs-on: ubuntu-latest
 
     permissions:
       contents: write
       packages: write
 
-    strategy:
-      matrix:
-        addon: [mqtt-anonymous]
+    # strategy:
+    #   matrix:
+    #     addon: [mqtt-anonymous]
 
     steps:
       - uses: actions/checkout@v4.2.2
         with:
           persist-credentials: true
+
+      - name: Get information
+        id: info
+        uses: home-assistant/actions/helpers/info@master
+        with:
+          path: "./${{ matrix.addon }}"
+
+      - name: Check if add-on should be built
+        id: check
+        run: |
+          if [[ "${{ steps.info.outputs.image }}" == "null" ]]; then
+            echo "Image property is not defined, skipping build"
+            echo "build_arch=false" >> $GITHUB_OUTPUT;
+          else
+            echo "build_arch=true" >> $GITHUB_OUTPUT;
+            echo "image=$(echo ${{ steps.info.outputs.image }} | cut -d'/' -f3)" >> $GITHUB_OUTPUT;
+            if [[ -z "${{ github.head_ref }}" ]] && [[ "${{ github.event_name }}" == "push" ]]; then
+                echo "BUILD_ARGS=" >> $GITHUB_ENV;
+            fi
+          fi
 
       - name: Config-YAML erstellen
         shell: python
@@ -37,6 +116,7 @@ jobs:
             yaml.dump(config, file)
 
       - name: Login to GitHub Container Registry
+        if: env.BUILD_ARGS != '--test'
         uses: docker/login-action@v3.4.0
         with:
           registry: ghcr.io
@@ -47,12 +127,14 @@ jobs:
         uses: home-assistant/builder@2025.03.0
         with:
           args: |
+            ${{ env.BUILD_ARGS }} \
             --amd64 \
             --target ${{ matrix.addon }} \
             --docker-hub "ghcr.io/${{ github.repository_owner }}" \
             --addon
 
       - name: Config.yaml committen und pushen
+        if: env.BUILD_ARGS != '--test'
         working-directory: ${{ matrix.addon }}
         run: |
           git config --global user.name "github-actions[bot]"
