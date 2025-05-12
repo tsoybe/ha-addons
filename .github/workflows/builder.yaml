@@ -10,7 +10,6 @@ on:
 jobs:
 
   build:
-    needs: check-changed
     name: Build ${{ github.event.inputs.addon }} add-on
     
     runs-on: ubuntu-latest
