@@ -84,7 +84,7 @@ jobs:
           import yaml
           with open('config.yaml', 'r') as file:
             config = yaml.safe_load(file)
-          config.pop("version")
+          if "version" in config: config.pop("version")
           with open('config.yaml', 'w') as file:
             yaml.dump(config, file)
 
@@ -103,3 +103,5 @@ jobs:
         if: steps.trivy.outcome == 'failure'
         run: |
           gh workflow run builder.yaml --ref main -f addon=${{ matrix.addon }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
