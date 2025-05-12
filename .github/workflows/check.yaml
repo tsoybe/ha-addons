@@ -44,7 +44,7 @@ jobs:
         run: |
           if [[ "${{ steps.info.outputs.image }}" == "null" ]]; then 
             echo "Image property is not defined, skipping build"  >> $GITHUB_STEP_SUMMARY
-                continue-on-error: true
+
       - name: Run Trivy vulnerability scanner
         if: steps.info.outputs.image != '"null"'
         id: trivy
