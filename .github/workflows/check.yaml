@@ -56,7 +56,7 @@ jobs:
         with:
           image-ref: ${{ steps.check.outputs.image }}
           format: 'table'
-          # exit-code: '1'
+          exit-code: '1'
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
@@ -68,9 +68,25 @@ jobs:
           # TRIVY_SKIP_DB_UPDATE: true
           TRIVY_SKIP_JAVA_DB_UPDATE: true
 
+      - name: Set output if vulnerable
+        id: result
+        run: |
+          if [ $? -ne 0 ]; then
+            echo "vulnerable=true" >> $GITHUB_OUTPUT
+          else
+            echo "vulnerable=false" >> $GITHUB_OUTPUT
+          fi
+        shell: bash
+
       - name: Summary
         # if: always()
         run: |
           echo '```' >> $GITHUB_STEP_SUMMARY
           cat trivy-results.table | tee -a $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
+
+  next:
+    runs-on: ubuntu-latest
+    needs: trivy
+    steps:
+      - run: echo "${ needs.trivy.outputs.vulnerable }" >> $GITHUB_STEP_SUMMARY
