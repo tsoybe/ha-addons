@@ -10,5 +10,5 @@ slug: fhem
 uart: true
 url: https://github.com/tsoybe/ha-addons
 usb: true
+version: 0.1.23
 webui: http://[HOST]:[PORT:8083]/fhem
-version: 0.1.22
