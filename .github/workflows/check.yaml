@@ -76,29 +76,6 @@ jobs:
           cat trivy-results.table | tee -a $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
 
-      - name: Config-YAML anpassen
-        if: steps.trivy.outcome == 'failure'
-        shell: python
-        working-directory: ${{ matrix.addon }}
-        run: |
-          import yaml
-          with open('config.yaml', 'r') as file:
-            config = yaml.safe_load(file)
-          if "version" in config: config.pop("version")
-          with open('config.yaml', 'w') as file:
-            yaml.dump(config, file)
-
-      - name: Config-YAML anpassen
-        if: steps.trivy.outcome == 'failure'
-        working-directory: ${{ matrix.addon }}
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add config.yaml
-          git commit -m "Versionsupdate: ${{ matrix.addon }}"
-          git pull --rebase
-          git push
-
       - name: Start Workflow
         if: steps.trivy.outcome == 'failure'
         run: |
