@@ -4,11 +4,13 @@ description: "FHEM f\xFCr HomeAssistent"
 image: ghcr.io/tsoybe/ha-addon-fhem
 ingress: true
 ingress_entry: /fhem
-ingress_port: 8083
+ingress_port: 8084
 init: false
 name: FHEM
 ports:
   8083/tcp: 8083
+  8084/tcp: 8084
+ssl: true
 slug: fhem
 uart: true
 url: https://github.com/tsoybe/ha-addons
