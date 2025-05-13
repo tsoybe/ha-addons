@@ -14,4 +14,4 @@ slug: fhem
 uart: true
 url: https://github.com/tsoybe/ha-addons
 usb: true
-version: 0.1.35
+version: 0.1.37
