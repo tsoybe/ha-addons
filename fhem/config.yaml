@@ -2,6 +2,9 @@ arch:
 - amd64
 description: "FHEM f\xFCr HomeAssistent"
 image: ghcr.io/tsoybe/ha-addon-fhem
+ingress: true
+ingress_entry: /fhem
+ingress_port: 8083
 init: false
 name: FHEM
 ports:
@@ -10,8 +13,4 @@ slug: fhem
 uart: true
 url: https://github.com/tsoybe/ha-addons
 usb: true
-version: 0.1.24
-# webui: http://[HOST]:[PORT:8083]/fhem
-ingress: true
-ingress_port: 8083
-ingress_entry: /fhem
+version: 0.1.34
