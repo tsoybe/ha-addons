@@ -8,5 +8,5 @@ ports:
   873/tcp: 873
 slug: rsync-server
 url: https://github.com/tsoybe/ha-addons
-version: 0.1.43
 usb: true
+version: 0.1.44
