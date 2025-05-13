@@ -11,7 +11,8 @@ ports:
   8083/tcp: 8083
   8084/tcp: 8084
 slug: fhem
+ssl: true
 uart: true
 url: https://github.com/tsoybe/ha-addons
 usb: true
-version: 0.1.34
+version: 0.1.35
