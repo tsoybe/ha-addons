@@ -1,2 +1,3 @@
  [![Builder](https://github.com/tsoybe/ha-addons/actions/workflows/builder.yaml/badge.svg)](https://github.com/tsoybe/ha-addons/actions/workflows/builder.yaml)
- 
+ [![Check Update](https://github.com/tsoybe/ha-addons/actions/workflows/update.yaml/badge.svg)](https://github.com/tsoybe/ha-addons/actions/workflows/update.yaml)
+ [![Container-Check](https://github.com/tsoybe/ha-addons/actions/workflows/check.yaml/badge.svg)](https://github.com/tsoybe/ha-addons/actions/workflows/check.yaml)
