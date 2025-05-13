@@ -1,8 +1,8 @@
 #!/usr/bin/bash
 echo "##############################"
 
-if [ ! -f "/etc/rsync.conf" ]; then
-   cat <<EOF > /etc/rsync.conf
+if [ ! -f "/etc/rsyncd.conf" ]; then
+   cat <<EOF > /etc/rsyncd.conf
 use chroot = false
 hosts allow = 0.0.0.0/0
 
