@@ -1,0 +1,10 @@
+arch:
+- amd64
+description: RSYNC-Server
+image: ghcr.io/tsoybe/ha-addon-rsync-server
+init: false
+name: RSYNC-Server
+ports:
+  873/tcp: 873
+slug: rsync-server
+url: https://github.com/tsoybe/ha-addons
