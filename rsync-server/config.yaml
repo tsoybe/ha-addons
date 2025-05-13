@@ -9,3 +9,4 @@ ports:
 slug: rsync-server
 url: https://github.com/tsoybe/ha-addons
 version: 0.1.42
+usb: true
