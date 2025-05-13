@@ -34,8 +34,10 @@ ENV LC_CTYPE=$LANG \
     LC_MEASUREMENT=$LANG \
     LC_IDENTIFICATION=$LANG
   
-CMD ["/usr/bin/rsync", "--no-detach", "--daemon"]
-  
+#CMD ["/usr/bin/rsync", "--no-detach", "--daemon"]
+COPY run.sh /
+CMD /run.sh
+
 #       container_name: ${NAME}
 #       hostname: ${NAME}
 #       image: $IMAGE
@@ -48,7 +50,8 @@ CMD ["/usr/bin/rsync", "--no-detach", "--daemon"]
 #         - /LOCAL/extern/Platte3:/BACKUP3
 #       networks:
 #         vlan4:
-#           ipv4_address: 192.168.178.12
+#           ipv4_addrCOPY run.sh /opt/fhem
+
 #       profiles: ["vmx"]
   
 #   networks:
