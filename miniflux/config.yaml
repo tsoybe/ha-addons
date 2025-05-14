@@ -8,13 +8,19 @@ ingress_port: 8080
 init: false
 name: Miniflux
 options:
-  BASE_URL: https://rss.wg.y-o-b.de/
-  DATABASE_URL: postgres://miniflux:miniflux@10.30.10.15/miniflux2?sslmode=disable
+  db_host: ''
+  db_name: miniflux2
+  db_password: miniflux
+  db_port: 5432
+  db_user: miniflux
 ports:
   8080/tcp: 8080
 schema:
-  BASE_URL: str
-  DATABASE_URL: str
+  db_host: str
+  db_name: str
+  db_password: password
+  db_port: int
+  db_user: str
 slug: miniflux_beta
 startup: services
-version: 0.1.3
+version: 0.1.6
