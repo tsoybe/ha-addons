@@ -1,6 +1,7 @@
 #!/bin/sh
 
 echo "##############################"
+cat /data/options.json
 
 export BASE_URL=$(jq -r '.base_url' /data/options.json)
 echo "BaseURL: $BASE_URL"
