@@ -8,7 +8,7 @@ name: Miniflux
 options:
   admin_password: admin
   admin_username: admin
-  base_path: ''
+  base_url: http://localhost/
   create_admin: true
   db_host: ''
   db_name: miniflux2
@@ -29,4 +29,4 @@ schema:
   db_user: str
 slug: miniflux_beta
 startup: services
-version: 0.1.16
+version: 0.1.14
