@@ -4,6 +4,7 @@ slug: "miniflux"
 description: "Miniflux RSS Reader"
 startup: services
 image: ghcr.io/tsoybe/ha-addon-miniflux
+init: false
 boot: auto
 ingress: true
 ingress_port: 8080
