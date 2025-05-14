@@ -1,4 +1,5 @@
-arch: ['amd64']
+arch:
+- amd64
 boot: auto
 description: Miniflux RSS Reader
 image: ghcr.io/tsoybe/ha-addon-miniflux
@@ -6,8 +7,6 @@ ingress: true
 ingress_port: 8080
 init: false
 name: Miniflux
-slug: "miniflux"
-startup: services
 options:
   db_host: ''
   db_name: miniflux
@@ -22,3 +21,6 @@ schema:
   db_password: password
   db_port: int
   db_user: str
+slug: miniflux
+startup: services
+version: 0.0.0
