@@ -6,10 +6,10 @@ image: ghcr.io/tsoybe/ha-addon-miniflux
 init: false
 name: Miniflux
 options:
-  create_admin_password: admin
-  create_admin_username: admin
   base_url: http://localhost/
   create_admin: true
+  create_admin_password: admin
+  create_admin_username: admin
   db_host: ''
   db_name: miniflux2
   db_password: miniflux
@@ -18,10 +18,10 @@ options:
 ports:
   8080/tcp: 8080
 schema:
-  create_admin_password: password?
-  create_admin_username: str?
   base_url: str
   create_admin: bool
+  create_admin_password: password?
+  create_admin_username: str?
   db_host: str
   db_name: str
   db_password: password
@@ -29,4 +29,4 @@ schema:
   db_user: str
 slug: miniflux_beta
 startup: services
-version: 0.1.19
+version: 0.1.20
