@@ -1,27 +1,23 @@
-name: "Miniflux"
-version: "0.1.0"
-slug: "miniflux"
-description: "Miniflux RSS Reader"
-startup: services
-image: ghcr.io/tsoybe/ha-addon-miniflux
-init: false
 boot: auto
+description: Miniflux RSS Reader
+image: ghcr.io/tsoybe/ha-addon-miniflux
 ingress: true
 ingress_port: 8080
+init: false
+name: Miniflux
+slug: "miniflux"
+startup: services
+options:
+  db_host: ''
+  db_name: miniflux
+  db_password: miniflux
+  db_port: 5432
+  db_user: miniflux
 ports:
   8080/tcp: 8080
-arch:
-  - amd64
-options:
-  db_host: "localhost"
-  db_port: 5432
-  db_name: "miniflux"
-  db_user: "miniflux"
-  db_password: "password"
-
 schema:
   db_host: str
-  db_port: int
   db_name: str
-  db_user: str
   db_password: password
+  db_port: int
+  db_user: str
