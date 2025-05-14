@@ -6,6 +6,10 @@ on:
       addon:
         description: 'Addon, welches gebaut werden soll'
         required: true
+      changelog:
+        desciption: 'Was wurde geändert?'
+        reqired: true
+        default: "Entwicklung, Stabilisierung und/oder Sicherheitspatche"
 
 jobs:
 
