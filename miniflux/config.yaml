@@ -1,15 +1,7 @@
 arch:
 - amd64
 boot: auto
-description:
-  admin_password: nur wenn Erstellung des Adminuser aktivert ist
-  admin_username: nur wenn Erstellung des Adminuser aktivert ist
-  create_admin: Erstellung eines Adminuser aktivieren
-  db_host: Hostname oder IP des Datenbankservers
-  db_name: Name der Datenbank
-  db_password: Passwort des Datenbankusers
-  db_port: Port der Datenbankinstanz
-  db_user: Name des Datenbankusers
+description: Miniflux RSS Reader
 image: ghcr.io/tsoybe/ha-addon-miniflux
 init: false
 name: Miniflux
