@@ -36,7 +36,7 @@ jobs:
         shell: python
         working-directory: ${{ env.addon }}
         run: |
-          import yaml
+          import yaml, semver
           with open('config.yaml', 'r') as file:
             config = yaml.safe_load(file)
           config["version"] = "0.1.${{ github.run_number }}"
