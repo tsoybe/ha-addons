@@ -20,7 +20,7 @@ ports:
 schema:
   admin_password: password?
   admin_username: str?
-  base_path: str
+  base_url: str
   create_admin: bool
   db_host: str
   db_name: str
