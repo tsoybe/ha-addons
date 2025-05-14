@@ -1,1 +1,1 @@
-FROM miniflux:miniflux
+FROM miniflux/miniflux
