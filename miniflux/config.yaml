@@ -8,7 +8,7 @@ name: Miniflux
 options:
   admin_password: admin
   admin_username: admin
-  base_url: http://localhost/
+  base_path: ''
   create_admin: true
   db_host: ''
   db_name: miniflux2
@@ -20,7 +20,7 @@ ports:
 schema:
   admin_password: password?
   admin_username: str?
-  base_url: str
+  base_path: str
   create_admin: bool
   db_host: str
   db_name: str
