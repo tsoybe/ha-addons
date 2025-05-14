@@ -43,14 +43,16 @@ jobs:
           from semver import Version
           with open('config.yaml', 'r') as file:
             config = yaml.safe_load(file)
-          ver=config.get("version", "0")
-          print(ver)
+          str_old_version=config.get("version", "0")
+          print(str_old_version)
           try:
-            version = Version.parse(str_version, optional_minor_and_patch=True)
+            version = Version.parse(str_old_version, optional_minor_and_patch=True)
           except:
             version = Version.parse("0.0.0")
           version.bump_patch()
-          config["version"] = str(version)
+          str_new_version=str(version
+          print(str_new_version)
+          config["version"] = str(str_new_version)
           with open('config.yaml', 'w') as file:
             yaml.dump(config, file)
 
