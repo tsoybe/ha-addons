@@ -7,8 +7,10 @@ DB_PORT=$(jq -r '.db_port' /data/options.json)
 DB_NAME=$(jq -r '.db_name' /data/options.json)
 DB_USER=$(jq -r '.db_user' /data/options.json)
 DB_PASSWORD=$(jq -r '.db_password' /data/options.json)
-CREATE_ADMIN=$(jq -r '.create_admin' /data/options.json)
 
+BASE_URL=$(jq -r '.base_url' /data/options.json)
+
+CREATE_ADMIN=$(jq -r '.create_admin' /data/options.json)
 if [ "$CREATE_ADMIN" = "true" ]; then
   export CREATE_ADMIN=1
   export ADMIN_USERNAME=$(jq -r '.admin_username' /data/options.json)
