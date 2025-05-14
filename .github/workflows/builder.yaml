@@ -48,7 +48,7 @@ jobs:
           except:
             version = Version.parse("0.0.0")
           version.bump_patch()
-          config["version"] = version
+          config["version"] = str(version)
           with open('config.yaml', 'w') as file:
             yaml.dump(config, file)
 
