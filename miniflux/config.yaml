@@ -1,22 +1,21 @@
 arch:
 - amd64
 boot: auto
-description: Miniflux RSS Reader
+description:
+  admin_password: nur wenn Erstellung des Adminuser aktivert ist
+  admin_username: nur wenn Erstellung des Adminuser aktivert ist
+  create_admin: Erstellung eines Adminuser aktivieren
+  db_host: Hostname oder IP des Datenbankservers
+  db_name: Name der Datenbank
+  db_password: Passwort des Datenbankusers
+  db_port: Port der Datenbankinstanz
+  db_user: Name des Datenbankusers
 image: ghcr.io/tsoybe/ha-addon-miniflux
 init: false
 name: Miniflux
-description:
-  admin_username: nur wenn Erstellung des Adminuser aktivert ist
-  admin_password: nur wenn Erstellung des Adminuser aktivert ist
-  create_admin: "Erstellung eines Adminuser aktivieren"
-  db_host: Hostname oder IP des Datenbankservers
-  db_port: Port der Datenbankinstanz
-  db_name: Name der Datenbank
-  db_user: Name des Datenbankusers
-  db_password: Passwort des Datenbankusers
 options:
-  admin_username: admin
   admin_password: admin
+  admin_username: admin
   create_admin: true
   db_host: ''
   db_name: miniflux2
@@ -26,8 +25,8 @@ options:
 ports:
   8080/tcp: 8080
 schema:
-  admin_username: str?
   admin_password: password?
+  admin_username: str?
   create_admin: bool
   db_host: str
   db_name: str
@@ -36,4 +35,4 @@ schema:
   db_user: str
 slug: miniflux_beta
 startup: services
-version: 0.1.11
+version: 0.1.12
