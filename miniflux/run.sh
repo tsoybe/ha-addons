@@ -14,4 +14,4 @@ export DATABASE_URL="postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/
 
 env
 
-exec /usr/bin/miniflux
+exec su-exec nobody /usr/bin/miniflux
