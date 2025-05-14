@@ -23,4 +23,4 @@ schema:
   db_user: str
 slug: miniflux_beta
 startup: services
-version: 0.1.10
+version: 0.1.11
