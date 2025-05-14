@@ -18,8 +18,8 @@ echo "DATABASE_URL=\"postgres://${DB_USER}:***@${DB_HOST}:${DB_PORT}/${DB_NAME}?
 CREATE_ADMIN=$(jq -r '.create_admin' /data/options.json)
 if [ "$CREATE_ADMIN" = "true" ]; then
   export CREATE_ADMIN=1
-  export ADMIN_USERNAME=$(jq -r '.admin_username' /data/options.json)
-  export ADMIN_PASSWORD=$(jq -r '.admin_password' /data/options.json)
+  export ADMIN_USERNAME=$(jq -r '.create_admin_username' /data/options.json)
+  export ADMIN_PASSWORD=$(jq -r '.create_admin_password' /data/options.json)
   echo "Create Admin: $ADMIN_USERNAME"
 else
   export CREATE_ADMIN=0
