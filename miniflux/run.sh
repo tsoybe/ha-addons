@@ -2,7 +2,7 @@
 
 echo "##############################"
 
-export BASE_PATH=$(jq -r '.base_url' /data/options.json)
+export BASE_PATH=$(jq -r '.base_path' /data/options.json)
 echo "BasePath: $BASE_PATH"
 
 export RUN_MIGRATIONS=1
