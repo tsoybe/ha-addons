@@ -9,12 +9,12 @@ init: false
 name: Miniflux
 options:
   BASE_URL: https://rss.wg.y-o-b.de/
-  DATABASE_URL: postgres://miniflux:miniflux@10.30.10.15/miniflux?sslmode=disable
+  DATABASE_URL: postgres://miniflux:miniflux@10.30.10.15/miniflux2?sslmode=disable
 ports:
   8080/tcp: 8080
 schema:
   BASE_URL: str
   DATABASE_URL: str
-slug: miniflux
+slug: miniflux_beta
 startup: services
 version: 0.1.2
