@@ -2,6 +2,8 @@
 
 echo "##############################"
 
+cat /data/options.json
+
 DB_HOST=$(jq -r '.db_host' /data/options.json)
 DB_PORT=$(jq -r '.db_port' /data/options.json)
 DB_NAME=$(jq -r '.db_name' /data/options.json)

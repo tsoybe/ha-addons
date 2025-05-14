@@ -9,7 +9,7 @@ on:
       changelog:
         desciption: 'Was wurde geändert?'
         reqired: true
-        default: "Entwicklung, Stabilisierung und/oder Sicherheitspatche"
+        default: "Development, stabilization and/or security patches"
 
 jobs:
 
