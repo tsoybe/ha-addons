@@ -50,7 +50,7 @@ jobs:
           except:
             version = Version.parse("0.0.0")
           version.bump_patch()
-          str_new_version=str(version
+          str_new_version=str(version)
           print(str_new_version)
           config["version"] = str(str_new_version)
           with open('config.yaml', 'w') as file:
