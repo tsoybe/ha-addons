@@ -1,8 +1,6 @@
 # FROM ghcr.io/miniflux/miniflux
-FROM ghcr.io/home-assistant/amd64-base:latest
-
-# ARG BUILD_FROM
-# FROM $BUILD_FROM
+ARG BUILD_FROM
+FROM $BUILD_FROM
 
 RUN curl -s https://api.github.com/repos/miniflux/v2/releases/latest \
     | jq -r '.assets[] | select(.name | test("linux-amd64$")) | .browser_download_url' \
