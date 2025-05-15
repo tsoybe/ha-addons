@@ -1,0 +1,22 @@
+#!/usr/bin/with-contenv bash
+
+echo "##############################"
+
+echo "BaseURL: $BASE_URL"
+
+export RUN_MIGRATIONS=1
+
+export DATABASE_URL="postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=disable"
+echo "DatabaseURL: postgres://${DB_USER}:***@${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=disable"
+
+if [ "$CREATE_ADMIN" = "true" ]; then
+  export CREATE_ADMIN=1
+  export ADMIN_USERNAME=$CREATE_ADMIN_USERNAME
+  export ADMIN_PASSWORD=$CREATE_ADMIN_PASSWORD
+  echo "Create Admin: $ADMIN_USERNAME"
+else
+  export CREATE_ADMIN=0
+fi
+
+echo "##############################"
+exec /usr/bin/miniflux
