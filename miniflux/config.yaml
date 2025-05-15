@@ -18,6 +18,7 @@ options:
   db_user: miniflux
 ports:
   8080/tcp: 8080
+  8099/tcp: 8099
 schema:
   base_url: str
   create_admin: bool
