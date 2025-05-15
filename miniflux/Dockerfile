@@ -7,7 +7,7 @@ RUN curl -s https://api.github.com/repos/miniflux/v2/releases/latest \
     | xargs curl -L -o /usr/bin/miniflux
 RUN chmod +x /usr/bin/miniflux
 
-COPY services.d/* /etc/services.d/
+COPY services.d /etc/services.d/
 
 RUN apk add --no-cache nginx
 COPY ingress.conf /etc/nginx/nginx.conf
