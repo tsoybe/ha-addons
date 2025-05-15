@@ -2,7 +2,7 @@
 echo "##############################"
 
 # export BASE_URL=$(bashio::config 'base_url')
-echo "BaseURL: $BASE_URL"
+# echo "BaseURL: $BASE_URL"
 
 export RUN_MIGRATIONS=1
 export LISTEN_ADDR=0.0.0.0:8080
