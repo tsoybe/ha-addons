@@ -1,20 +1,24 @@
-#!/usr/bin/with-contenv bash
-
+#!/usr/bin/with-contenv bashio
 echo "##############################"
 
-env
-
+export BASE_URL=$(bashio::config 'base_url')
 echo "BaseURL: $BASE_URL"
 
 export RUN_MIGRATIONS=1
 
+DB_HOST=$(bashio::config 'db_host')
+DB_PORT=$(bashio::config 'db_port')
+DB_NAME=$(bashio::config 'db_name')
+DB_USER=$(bashio::config 'db_user')
+DB_PASSWORD=$(bashio::config 'db_password')
 export DATABASE_URL="postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=disable"
 echo "DatabaseURL: postgres://${DB_USER}:***@${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=disable"
 
+CREATE_ADMIN=$(bashio::config 'create_admin')
 if [ "$CREATE_ADMIN" = "true" ]; then
   export CREATE_ADMIN=1
-  export ADMIN_USERNAME=$CREATE_ADMIN_USERNAME
-  export ADMIN_PASSWORD=$CREATE_ADMIN_PASSWORD
+  export ADMIN_USERNAME=$(bashio::config 'create_admin_username')
+  export ADMIN_PASSWORD=$(bashio::config 'create_admin_password')
   echo "Create Admin: $ADMIN_USERNAME"
 else
   export CREATE_ADMIN=0
