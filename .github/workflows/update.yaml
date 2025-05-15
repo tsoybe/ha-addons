@@ -1,9 +1,5 @@
 name: Check Update
 
-env:
-  BUILD_ARGS: "--test"
-  MONITORED_FILES: "build.yaml config.yaml Dockerfile run.sh run"
-
 on:
   push:
     branches:
@@ -39,11 +35,7 @@ jobs:
         run: |
           for addon in ${{ steps.addons.outputs.addons }}; do
             if [[ "${{ steps.changed_files.outputs.all }}" =~ $addon ]]; then
-              for file in ${{ env.MONITORED_FILES }}; do
-                  if [[ "${{ steps.changed_files.outputs.all }}" =~ $addon/$file ]]; then
-                    gh workflow run builder.yaml --ref main -f addon=${addon};
-                    break
-                  fi
-              done
+              gh workflow run builder.yaml --ref main -f addon=${addon};
+              break
             fi
           done
