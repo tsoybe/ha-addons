@@ -4,9 +4,6 @@ echo "##############################"
 # export BASE_URL=$(bashio::config 'base_url')
 # echo "BaseURL: $BASE_URL"
 
-export BASE_PATH="${X_SCRIPT_NAME:-}"
-echo "BasePath: $BASE_PATH"
-
 export RUN_MIGRATIONS=1
 export LISTEN_ADDR=0.0.0.0:8080
 
