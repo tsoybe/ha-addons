@@ -9,5 +9,3 @@ RUN chmod +x /usr/bin/miniflux
 
 COPY services.d /etc/services.d/
 
-RUN apk add --no-cache nginx
-COPY nginx.conf /etc/nginx/nginx.conf
