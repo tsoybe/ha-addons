@@ -3,7 +3,6 @@ arch:
 boot: auto
 description: Miniflux RSS Reader
 image: ghcr.io/tsoybe/ha-addon-miniflux
-ingress: true
 init: false
 name: Miniflux
 options:
