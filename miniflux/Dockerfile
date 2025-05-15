@@ -8,4 +8,3 @@ RUN curl -s https://api.github.com/repos/miniflux/v2/releases/latest \
 RUN chmod +x /usr/bin/miniflux
 
 COPY services.d /etc/services.d/
-
