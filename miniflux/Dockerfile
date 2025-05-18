@@ -1,6 +1,9 @@
-# FROM ghcr.io/miniflux/miniflux
 ARG BUILD_FROM
 FROM $BUILD_FROM
+
+RUN apk update
+RUN apk add --upgrade apk-tools
+RUN apk upgrade --available
 
 RUN curl -s https://api.github.com/repos/miniflux/v2/releases/latest \
     | jq -r '.assets[] | select(.name | test("linux-amd64$")) | .browser_download_url' \
