@@ -6,4 +6,4 @@ init: false
 name: nix
 slug: nix
 startup: services
-version: 0.0.0
+version: 0.0.1
