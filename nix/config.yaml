@@ -1,0 +1,9 @@
+arch:
+- amd64
+description: garnix
+image: ghcr.io/tsoybe/ha-addon-nix
+init: false
+name: nix
+slug: nix
+startup: services
+version: 0.0.0
