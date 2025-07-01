@@ -8,4 +8,4 @@ name: Caddy
 ports:
   2019/tcp: 2019
 slug: caddy_beta
-version: 0.0.0
+version: 0.0.1
