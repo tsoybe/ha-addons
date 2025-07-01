@@ -1,4 +1,3 @@
-#!/usr/bin/sh
 
 echo "##############################"
 export HOME=/data
