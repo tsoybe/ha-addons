@@ -11,10 +11,12 @@ RUN apk add --upgrade apk-tools
 RUN apk upgrade --available
 
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
+
 EXPOSE 2019
 
-ENV HOME /data
+COPY caddy.json /caddy.json
+COPY run.sh /run.sh
 
 RUN echo "{admin 0.0.0.0:2019}" > /Caddyfile
 
-CMD ["/usr/bin/caddy", "run", "--resume", "--config", "/Caddyfile"]
+CMD ["/run.sh"]
