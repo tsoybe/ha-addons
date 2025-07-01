@@ -1,3 +1,6 @@
+FROM caddy:builder-alpine AS builder
+RUN xcaddy build --with github.com/caddy-dns/desec
+
 ARG BUILD_FROM
 FROM $BUILD_FROM
 
@@ -5,9 +8,7 @@ RUN apk update
 RUN apk add --upgrade apk-tools
 RUN apk upgrade --available
 
-RUN curl -s https://api.github.com/repos/miniflux/v2/releases/latest \
-    | jq -r '.assets[] | select(.name | test("linux-amd64$")) | .browser_download_url' \
-    | xargs curl -L -o /usr/bin/miniflux
-RUN chmod +x /usr/bin/miniflux
+COPY --from=builder /usr/bin/caddy /usr/bin/caddy
+EXPOSE 2019
 
-COPY services.d /etc/services.d/
+CMD ["/usr/bin/caddy", "run"]
