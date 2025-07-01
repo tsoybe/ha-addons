@@ -17,4 +17,4 @@ ENV HOME /data
 
 RUN echo "{admin 0.0.0.0:2019}" > /Caddyfile
 
-CMD ["/usr/bin/caddy", "run", "--config Caddyfile"]
+CMD ["/usr/bin/caddy", "run", "--resume", "--config", "/Caddyfile"]
