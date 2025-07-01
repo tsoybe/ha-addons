@@ -8,4 +8,4 @@ name: Caddy
 ingress: true
 ingress_port: 2019
 slug: caddy_beta
-version: 0.0.0
+version: 0.0.1
