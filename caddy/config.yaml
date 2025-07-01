@@ -3,8 +3,10 @@ arch:
 boot: auto
 description: Caddy
 image: ghcr.io/tsoybe/ha-addon-caddy
-ingress: true
-ingress_port: 2019
+# ingress: true
+# ingress_port: 2019
+ports:
+  2019/tcp: 2019
 init: false
 name: Caddy
 slug: caddy_beta1
