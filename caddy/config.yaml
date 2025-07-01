@@ -7,5 +7,5 @@ ingress: true
 ingress_port: 2019
 init: false
 name: Caddy
-slug: caddy_beta
+slug: caddy_beta1
 version: 0.0.4

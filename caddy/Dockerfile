@@ -17,6 +17,4 @@ EXPOSE 2019
 COPY caddy.json /caddy.json
 COPY run.sh /run.sh
 
-RUN echo "{admin 0.0.0.0:2019}" > /Caddyfile
-
-CMD ["/run.sh"]
+CMD /run.sh
